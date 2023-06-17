@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="author">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>svg generator</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<h1>FACE GENERATOR</h1>
+
+
+</header>
+
+<main>
+<fieldset>
+	<legend>custom section</legend>
+<p>
+Add custom custom faces 
+</p>
+	<textarea id="customFaceInput" cols="30" rows="10"  placeholder="Enter svg text for all the Faces">this is the new value</textarea>
+<p>
+Add custom custom body
+</p>
+	<textarea id="customBodyInput" cols="30" rows="10"  placeholder="enter svg text for the character with no face">this is the new value</textarea>
+<button id="addCustomButton">Add</button>
+</fieldset>
+
+<fieldset id="displaySection">
+
+<legend>Display Section</legend>
+
+<label>available bodies</label>
+<select id="displaySection">
+<option value="gabbeeto" selected>Gabbeeto</option>
+<option value="jay">Jay</option>
+<option value="yuchie">Yuchie</option>
+</select>
+
+
+<label>available faces</label>
+<select id="displaySection">
+<option value="angry0" selected>angry</option>
+<option value="happy">happy</option>
+<option value="wonder">wonder</option>
+</select>
+
+<button id="showButton">show</button>
+
+
+<svg width="300" height="400" viewBox="0 0 1300 1300">
+
+
+<use href="#yuchie"></use>
+<use href="#happy"></use>
+</svg>
+</fieldset>
+
+
+
+
+</section>
+
+	<p>generate all your faceless svg with all of the faces</p>
+	<button id="generateFaces">generate svg</button>
+</main>
+
+<footer>
+<p>
+<a href="https://gabbeeto.github.io/homePage/">&copy;Gabbeeto</a>
+</p>
+</footer>
+
+
+
+<script src="functionality.js"></script>
+</body>
+</html>

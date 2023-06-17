@@ -1,0 +1,46 @@
+:root{
+--border: 1px solid #333;
+
+
+
+}
+*{
+margin: 0;
+padding: 0;
+box-sizing: 0;
+
+
+}
+
+
+body{
+background-color: #101010;
+color: white;
+}
+
+
+
+header, footer{
+display: flex;
+justify-content: center;
+}
+
+button{
+display: block;
+}
+
+select{
+display: block;
+}
+
+header{
+padding: 10px;
+border-bottom: var(--border);
+}
+
+
+
+footer{
+padding: 5px;
+border-top: var(--border);
+}
