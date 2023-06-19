@@ -1,9 +1,10 @@
 :root{
---border: 1px solid #333;
+--border: 1px solid white;
 
 
 
 }
+
 *{
 margin: 0;
 padding: 0;
@@ -25,8 +26,27 @@ display: flex;
 justify-content: center;
 }
 
-button{
-display: block;
+#seperator{
+display:flex;
+flex-direction: row;
+justify-content: space-around;
+}
+
+fieldset{
+margin:5px;
+padding:5px;
+display: flex;
+border-radius: 20px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 10px;
+}
+
+legend{
+border: var(--border);
+border-radius: 10px;
+padding: 10px;
 }
 
 select{
@@ -39,8 +59,23 @@ border-bottom: var(--border);
 }
 
 
+#generate{
+padding: 80px 0;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin-bottom: 20px;
+}
 
 footer{
-padding: 5px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding-top: 5px;
+padding-bottom: 5px;
 border-top: var(--border);
+width: 100dvw;
+bottom: 0;
 }
