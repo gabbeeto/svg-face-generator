@@ -1,14 +1,18 @@
 let generateFacesButton = document.querySelector('#generateFaces');
 
+
 generateFacesButton.addEventListener('click',generate)
 
 
 //faces is an array from the other javascript file
 //characters is an array from the other javascript file
+let selector;
 function generate(){
-
+grabSelector();
 for(let index = 0;index < faces.length; index++){
-downloadFile(faces[index], `face${index}`);
+faceTogether = faces.map(face => selector.beforeHair + face + selector.hair);
+	//todo 
+downloadFile(faceTogether[index], `face${index}`);
 }
 
 }
@@ -17,9 +21,16 @@ downloadFile(faces[index], `face${index}`);
 
 
 
-
-
-
+function grabSelector(){
+if(document.querySelector('#characterSelect').value == 'gabbeeto'){
+selector = gabbeeto;}
+else if(document.querySelector('#characterSelect').value == 'jay'){
+selector = jay;
+}
+else{
+selector = yuchie;
+}
+}
 
 
 
