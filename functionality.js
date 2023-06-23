@@ -10,9 +10,9 @@ let selector;
 function generate(){
 grabSelector();
 for(let index = 0;index < faces.length; index++){
-faceTogether = faces.map(face => selector.beforeHair + face + selector.hair);
+faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
 	//todo 
-downloadFile(faceTogether[index], `face${index}`);
+downloadFile(faceTogether[index], `${faces[index].name}`);
 }
 
 }
@@ -22,14 +22,8 @@ downloadFile(faceTogether[index], `face${index}`);
 
 
 function grabSelector(){
-if(document.querySelector('#characterSelect').value == 'gabbeeto'){
-selector = gabbeeto;}
-else if(document.querySelector('#characterSelect').value == 'jay'){
-selector = jay;
-}
-else{
-selector = yuchie;
-}
+characters.forEach(word => {
+if(document.querySelector('#characterSelect').value == word.name){selector = word;}});
 }
 
 
@@ -62,3 +56,70 @@ link.download = `${name}.svg`;
 link.click();
 URL.revokeObjectURL(link.href);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let customFaceInput = document.querySelector('#customFaceInput');
+let customBodyInput = document.querySelector('#customBodyInput');
+
+
+let customFaceInputButton = document.querySelector('#addCustomFacesButton');
+let customBodyInputButton = document.querySelector('#addCustomBodiesButton');
+
+document.querySelector('#customSection').addEventListener('click', customizeGenerator)
+
+function customizeGenerator(event){
+if(event.target == customFaceInputButton){
+alert('you touched the face input');
+changeFacesArray();
+}
+else if(event.target == customBodyInputButton){
+alert('you touched the body input');
+}
+}
+
+let newArray2;
+function changeFacesArray(){
+let newArray2 = customFaceInput.value.split(',,');
+let newArray3 = newArray2.map(word => word.replace(/[\n\t]/g, ''));
+
+// to-doadd a for loop that parses all of the items and make it an object
+//newArray = newArray3.map(word => JSON.parse(word) );
+
+document.querySelector('#faceSelect').innerHTML = '';
+for(let index = 0;newArray.length > index; index++){
+newOption = document.createElement('option');
+newOption.value = newArray[index].name;
+newOption.innerText = newArray[index].name;
+document.querySelector('#faceSelect').appendChild(newOption);
+}
+
+
+faces = newArray;
+
+
+
+}
+
