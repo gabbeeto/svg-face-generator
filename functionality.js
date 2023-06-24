@@ -73,30 +73,42 @@ let faceContainer = [];
 let bodyContainer = [];
 
 let addButton = document.querySelector('#add');
-addButton.addEventListener('click', changeFaceAndBodyStructure)
+let add2Button = document.querySelector('#add2');
+addButton.addEventListener('click', changeFaceStructure)
+add2Button.addEventListener('click', changeBodyStructure)
 
-function changeFaceAndBodyStructure(){
+function changeFaceStructure(){
 faces = [];
 changeFace();
-//changeBody();
+}
+function changeBodyStructure(){
+characters = [];
+changeBody();
 }
 
 
 
 function changeFace(){
 faceFileInput = document.querySelector('#faceFileInput');
+if(faceFileInput.files.length > 0){
 addUploadedInformationToTheselectedContainer(faceFileInput, faceContainer);
-faceSeperator(faceContainer)
+faceSeperator(faceContainer);
+//cleanAndUpdateFace();
+
+}
 
 }
 
 
 
 
-//function changeBody(){
-//bodyFileInput = document.querySelector('#bodyFileInput');
-//addUploadedInformationToTheselectedContainer(bodyFileInput, bodyContainer);
-//}
+function changeBody(){
+bodyFileInput = document.querySelector('#bodyFileInput');
+if(bodyFileInput.files.length > 0)
+addUploadedInformationToTheselectedContainer(bodyFileInput, bodyContainer);
+bodySeperator(bodyContainer);
+//cleanAndUpdateBody();
+}
 
 variable2 = [];
 
@@ -114,41 +126,73 @@ let svge1;
 let svge2;
 
 
-let var1;
-let var2;
-let var3;
-let var4;
+let beginning1;
+let beginning2;
+let end1;
+let end2;
 let nameForFace;
 let nameForFace2;
 
 function faceSeperator(variable){
 
 for(let index in variable){
+variable[index]
+beginning1 =  variable[index].indexOf('<d');
+end1 = variable[index].indexOf('</d') + 7;
+svge1 = variable[index].substring(beginning1,end1) ;
 
-variable2[index] = variable[index].split('');
-
-for(let index2 = 0; variable2[index].length > index2;index2++){
-if(variable2[index][index2] == '<' && variable2[index][index2 + 1] == 'd'){
-var1= index2;
-}
-else if(variable2[index][index2] == '<' && variable2[index][index2 + 1] == '/' && variable2[index][index2 + 2] == 'd'){
-var2= index2 + 6;
-}
-else if(variable2[index][index2] == '<' && variable2[index][index2 + 1] == 'u'){
-var3= index2;
-}
-else if(variable2[index][index2] == '>' && variable2[index][index2 + 1] == '\n' && variable2[index][index2 + 2] == '<' && variable2[index][index2 + 3] == 's' && variable2[index][index2 + 4] == 'v'){
-var4= index2+ 2;
-}
-
-svge1 = variable2[index].slice(var1, var2).join('');
-svge2 = variable2[index].slice(var3, var4).join('');
+beginning2 =  variable[index].indexOf('<u');
+end2 = variable[index].indexOf('</sv');
+svge2 = variable[index].substring(beginning2, end2);
 
 nameForFace = faceFileInput.files[index].name;
 nameForFace2 = nameForFace.substring(0,nameForFace.length -4);
 
 faces[index] = {name:`${nameForFace2}`, svg1: `${svge1}`, svg2: `${svge2}`};
-}
 
 }
 }
+
+let nameForBody;
+let nameForBody2;
+
+function bodySeperator(variable){
+
+for(let index in variable){
+variable[index]
+end1 = variable[index].indexOf('</tit') + 8;
+svge1 = variable[index].substring(0,end1) ;
+
+beginning2 =  variable[index].indexOf('<style');
+end2 = variable[index].indexOf('</g>') + 4;
+svge2 = variable[index].substring(beginning2, end2);
+
+nameForBody = bodyFileInput.files[index].name;
+nameForBody2 = nameForBody.substring(0,nameForBody.length -4);
+
+characters[index] = {name:`${nameForBody2}`, svg1: `${svge1}`, svg2: `${svge2}`, svg3: `</svg>`};
+}
+}
+
+
+//todo
+
+//function cleanAndUpdateFace(){
+//document.querySelector('#faceSelect').innerHTML = '';
+//for(let index = 0;faces.length > index; index++){
+//newOption = document.createElement('option');
+//newOption.value = faces[index].name;
+//newOption.innerText = faces[index].name;
+//document.querySelector('#faceSelect').appendChild(newOption);
+//}
+//}
+
+//function cleanAndUpdateBody(){
+//document.querySelector('#bodySelect').innerHTML = '';
+//for(let index = 0;faces.length > index; index++){
+//newOption = document.createElement('option');
+//newOption.value = characters[index].name;
+//newOption.innerText = characters[index].name;
+//document.querySelector('#faceSelect').appendChild(newOption);
+//}
+//}
