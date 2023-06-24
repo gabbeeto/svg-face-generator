@@ -23,19 +23,11 @@
 
 <fieldset id="customSection">
 	<legend>custom section</legend>
-<p>
-Add custom custom faces 
-</p>
-<textarea id="customFaceInput" cols="50" rows="15"  placeholder="Enter svg text for all the Faces"> {name:[the name of the face],
-	svg1:[first part of the svg with the def element],
-	svg2:[the use element for the svg]},,
-	[you can repeat this process as much as you want as long as you place 2 commas to separate all of the faces] </textarea>
-<p>
-Add custom custom body
-</p>
-	<textarea id="customBodyInput" cols="50" rows="15"  placeholder="enter svg text for the character with no face">this is the new value</textarea>
-<button id="addCustomFacesButton">Add custom faces</button>
-<button id="addCustomBodiesButton">Add custom bodies</button>
+	<p>upload faces</p>
+<input type="file"  id="faceFileInput" multiple />
+	<p>upload body</p>
+<input type="file"  id="bodyFileInput" multiple />
+<button id="add">finish</button>
 </fieldset>
 
 <fieldset id="displaySection">
