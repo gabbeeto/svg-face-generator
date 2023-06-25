@@ -63,6 +63,17 @@ URL.revokeObjectURL(link.href);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 let faceFileInput;
 
 let bodyFileInput;
@@ -93,7 +104,7 @@ faceFileInput = document.querySelector('#faceFileInput');
 if(faceFileInput.files.length > 0){
 addUploadedInformationToTheselectedContainer(faceFileInput, faceContainer);
 faceSeperator(faceContainer);
-//cleanAndUpdateFace();
+cleanAndUpdateFace();
 
 }
 
@@ -107,7 +118,7 @@ bodyFileInput = document.querySelector('#bodyFileInput');
 if(bodyFileInput.files.length > 0)
 addUploadedInformationToTheselectedContainer(bodyFileInput, bodyContainer);
 bodySeperator(bodyContainer);
-//cleanAndUpdateBody();
+cleanAndUpdateBody();
 }
 
 variable2 = [];
@@ -176,23 +187,23 @@ characters[index] = {name:`${nameForBody2}`, svg1: `${svge1}`, svg2: `${svge2}`,
 
 
 //todo
+let newOption;
+function cleanAndUpdateFace(){
+document.querySelector('#faceSelect').innerHTML = '';
+for(let index = 0;faces.length > index; index++){
+newOption = document.createElement('option');
+newOption.value = faces[index].name;
+newOption.innerText = faces[index].name;
+document.querySelector('#faceSelect').appendChild(newOption);
+}
+}
 
-//function cleanAndUpdateFace(){
-//document.querySelector('#faceSelect').innerHTML = '';
-//for(let index = 0;faces.length > index; index++){
-//newOption = document.createElement('option');
-//newOption.value = faces[index].name;
-//newOption.innerText = faces[index].name;
-//document.querySelector('#faceSelect').appendChild(newOption);
-//}
-//}
-
-//function cleanAndUpdateBody(){
-//document.querySelector('#bodySelect').innerHTML = '';
-//for(let index = 0;faces.length > index; index++){
-//newOption = document.createElement('option');
-//newOption.value = characters[index].name;
-//newOption.innerText = characters[index].name;
-//document.querySelector('#faceSelect').appendChild(newOption);
-//}
-//}
+function cleanAndUpdateBody(){
+document.querySelector('#characterSelect').innerHTML = '';
+for(let index = 0;characters.length > index; index++){
+newOption = document.createElement('option');
+newOption.value = characters[index].name;
+newOption.innerText = characters[index].name;
+document.querySelector('#characterSelect').appendChild(newOption);
+}
+}
