@@ -1,14 +1,14 @@
 let generateFacesButton = document.querySelector('#generateFaces');
 
 
-generateFacesButton.addEventListener('click',generate)
+generateFacesButton.addEventListener('click',generateFace)
 
 
 //faces is an array from the other javascript file
 //characters is an array from the other javascript file
 let selector;
-function generate(){
-grabSelector();
+function generateFace(){
+grabSelector('#characterSelect', characters);
 for(let index = 0;index < faces.length; index++){
 faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
 	//todo 
@@ -21,9 +21,9 @@ downloadFile(faceTogether[index], `${faces[index].name}`);
 
 
 
-function grabSelector(){
-characters.forEach(word => {
-if(document.querySelector('#characterSelect').value == word.name){selector = word;}});
+function grabSelector(select,containerForEach){
+containerForEach.forEach(word => {
+if(document.querySelector(select).value == word.name){selector = word;}});
 }
 
 
@@ -63,6 +63,20 @@ URL.revokeObjectURL(link.href);
 
 
 
+let generateBodiesButton = document.querySelector('#generateBodies');
+let bodyTogether;
+
+generateBodiesButton.addEventListener('click',generateBodies);
+
+
+function generateBodies(){
+grabSelector('#faceSelect', faces);
+for(let index = 0;index < characters.length; index++){
+bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
+downloadFile(bodyTogether[index], `${characters[index].name}`);
+}
+
+}
 
 
 
@@ -186,8 +200,11 @@ characters[index] = {name:`${nameForBody2}`, svg1: `${svge1}`, svg2: `${svge2}`,
 }
 
 
-//todo
+
+
+
 let newOption;
+
 function cleanAndUpdateFace(){
 document.querySelector('#faceSelect').innerHTML = '';
 for(let index = 0;faces.length > index; index++){
@@ -207,3 +224,51 @@ newOption.innerText = characters[index].name;
 document.querySelector('#characterSelect').appendChild(newOption);
 }
 }
+
+document.querySelector('#showButton').addEventListener('click', displayFaceAndBody);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let selector2;
+
+function displayFaceAndBody(){
+for(let index = 0; faces.length > index; index++)
+if(document.querySelector('#faceSelect').value == faces[index].name){
+selector2 = faces[index];
+}
+
+for(let index = 0; characters.length > index; index++)
+if(document.querySelector('#characterSelect').value == characters[index].name){
+selector = characters[index];
+}
+
+
+everythingTogether =  selector.svg1 + selector2.svg1 + selector.svg2 + selector2.svg2 + selector.svg3;
+
+document.querySelector('#faceAndBodyDisplay').innerHTML = `${everythingTogether}`;
+}
+
