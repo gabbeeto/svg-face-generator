@@ -268,7 +268,21 @@ selector = characters[index];
 
 
 everythingTogether =  selector.svg1 + selector2.svg1 + selector.svg2 + selector2.svg2 + selector.svg3;
-
 document.querySelector('#faceAndBodyDisplay').innerHTML = `${everythingTogether}`;
+document.querySelector('#faceAndBodyDisplay > *').style.transform =  `scale(${scaleValue})`;
 }
+
+
+
+
+
+
+document.addEventListener('mouseover', updateScaleValue)
+
+let scaleValue = 1.4
+function updateScaleValue(){
+scaleValue = document.querySelector('#scaleInput').value;
+document.querySelector('#scaleInputParagraph').innerText = scaleValue;
+}
+
 

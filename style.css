@@ -88,6 +88,14 @@ border-radius: 10vh;
 overflow: hidden;
 }
 
+input[type='range']{
+background-color: black;
+width: 15vw;
+
+
+}
+
+
 svg{
 	width: 100%;
 	height: 100%;
