@@ -1,10 +1,17 @@
 :root{
---border: 1px solid white;
+--border: 2px solid black;
 
 
 
 }
 
+
+
+@font-face{
+font-family: 'pinky';
+src: url('Pinky.ttf');
+
+}
 *{
 margin: 0;
 padding: 0;
@@ -15,8 +22,12 @@ box-sizing: 0;
 
 
 body{
-background-color: #101010;
+background-color: #9C4787;
 color: white;
+font-family: 'pinky';
+font-size: 25px;
+-webkit-text-stroke: 0.8px black;
+text-stroke: 0.8px black;
 }
 
 
@@ -28,12 +39,13 @@ justify-content: center;
 
 main{
 display:grid;
-grid-template-columns: repeat(5, 1fr);
+grid-template-columns: 25.8vw 1fr;
 grid-template-rows: repeat(2,1fr);
 width: 100vw;
 height: 88vh;
 flex-direction: row;
 justify-content: space-around;
+background-image: linear-gradient(#A877E2, #D698FF);
 }
 
 fieldset, #generate{
@@ -45,6 +57,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 gap: 10px;
+background-image: linear-gradient(#C471A7, #AF7CBA);
 }
 
 
@@ -53,6 +66,7 @@ grid-column-start: 1;
 grid-column-end: 1;
 grid-row-start: 1;
 grid-row-end: 1;
+border: var(--border);
 }
 
 
@@ -77,13 +91,15 @@ grid-column-start: 2;
 grid-column-end: -1;
 grid-row-start: 1;
 grid-row-end: -1;
+border: var(--border);
 
 }
 
 #faceAndBodyDisplay{
 height: 70%;
 width: 90%;
-background-color: white;
+border: 3px solid black;
+background-image: linear-gradient(#DE8495, white);
 border-radius: 10vh;
 overflow: hidden;
 }
@@ -91,10 +107,25 @@ overflow: hidden;
 input[type='range']{
 background-color: black;
 width: 15vw;
-
-
 }
 
+
+input[type='file']{
+font-family: 'pinky';
+width: 15vw;
+font-size: 16px;
+}
+
+input::file-selector-button {
+padding:5px;
+background-color:#964D63;
+color: white;
+border-radius: 10px;
+font-family: 'pinky';
+text-stroke:0px;
+-webkit-text-stroke:0px;
+border: var(--border);
+}
 
 svg{
 	width: 100%;
@@ -106,11 +137,16 @@ svg{
 legend{
 border: var(--border);
 border-radius: 10px;
+background-color: #4D3447;
 padding: 10px;
 }
 
 select{
 display: block;
+border: var(--border);
+border-radius: 6px;
+padding: 3px;
+font-family: 'pinky';
 }
 
 header{
@@ -118,6 +154,12 @@ padding: 10px;
 border-bottom: var(--border);
 }
 
+button{
+padding: 8px;
+font-family: 'pinky';
+border-radius: 10px;
+border: var(--border);
+}
 
 
 footer{

@@ -277,7 +277,7 @@ document.querySelector('#faceAndBodyDisplay > *').style.transform =  `scale(${sc
 
 
 
-document.addEventListener('mouseover', updateScaleValue)
+document.querySelector('#scaleInput').addEventListener('change', updateScaleValue)
 
 let scaleValue = 1.4
 function updateScaleValue(){
