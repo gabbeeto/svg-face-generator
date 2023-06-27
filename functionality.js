@@ -309,3 +309,33 @@ displayFaceAndBody();
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.querySelector('#advanced').addEventListener('click', switchToAdvanced);
+
+function switchToAdvanced(){
+document.querySelector('#advancedMain').style.display = 'flex';
+document.querySelector('#basicMain').style.display = 'none';
+
+
+}
+

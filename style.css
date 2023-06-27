@@ -44,7 +44,7 @@ padding-top: 10px;
 padding-bottom: 10px;
 }
 
-main{
+#basicMain{
 display:grid;
 grid-template-columns: 27% 1fr;
 grid-template-rows: repeat(2,1fr);
@@ -203,5 +203,17 @@ height: 25%;
 
 }
 
+
+}
+
+
+
+/*advance main section*/
+
+
+
+
+#advancedMain{
+display:none;
 
 }
