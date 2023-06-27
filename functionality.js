@@ -8,10 +8,11 @@ generateFacesButton.addEventListener('click',generateFace)
 //characters is an array from the other javascript file
 let selector;
 function generateFace(){
-grabSelector('#characterSelect', characters);
-for(let index = 0;index < faces.length; index++){
+grabSelectorToMixItWithMissingPart('#characterSelect', characters);
+
+for(let index = 0;index < faces.length; index++)
+{
 faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
-	//todo 
 downloadFile(faceTogether[index], `${faces[index].name}`);
 }
 
@@ -21,9 +22,11 @@ downloadFile(faceTogether[index], `${faces[index].name}`);
 
 
 
-function grabSelector(select,containerForEach){
+function grabSelectorToMixItWithMissingPart(select,containerForEach){
 containerForEach.forEach(word => {
-if(document.querySelector(select).value == word.name){selector = word;}});
+if(document.querySelector(select).value == word.name)
+{selector = word;}
+});
 }
 
 
@@ -32,13 +35,7 @@ if(document.querySelector(select).value == word.name){selector = word;}});
 
 
 
-
-
-
-
-
-
-function downloadFile(fileContent,name){
+function downloadFile(fileContent,nameOfFile){
 
 // Create element with <a> tag
 link = document.createElement("a");
@@ -50,7 +47,7 @@ file = new Blob([fileContent], { type: 'text/plain' });
 link.href = URL.createObjectURL(file);
 
 // Add file name
-link.download = `${name}.svg`;
+link.download = `${nameOfFile}.svg`;
 
 // Add click event to <a> tag to save file.
 link.click();
@@ -70,7 +67,7 @@ generateBodiesButton.addEventListener('click',generateBodies);
 
 
 function generateBodies(){
-grabSelector('#faceSelect', faces);
+grabSelectorToMixItWithMissingPart('#faceSelect', faces);
 for(let index = 0;index < characters.length; index++){
 bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
 downloadFile(bodyTogether[index], `${characters[index].name}`);
@@ -89,23 +86,20 @@ downloadFile(bodyTogether[index], `${characters[index].name}`);
 
 
 let faceFileInput;
-
 let bodyFileInput;
 
-let reader = [];
+let generateFaceButton = document.querySelector('#add');
+let generateBodyButton = document.querySelector('#add2');
 
-let faceContainer = [];
-let bodyContainer = [];
+generateFaceButton.addEventListener('click', changeFaceStructure)
+generateBodyButton.addEventListener('click', changeBodyStructure)
 
-let addButton = document.querySelector('#add');
-let add2Button = document.querySelector('#add2');
-addButton.addEventListener('click', changeFaceStructure)
-add2Button.addEventListener('click', changeBodyStructure)
 
 function changeFaceStructure(){
 faces = [];
 changeFace();
 }
+
 function changeBodyStructure(){
 characters = [];
 changeBody();
@@ -113,31 +107,34 @@ changeBody();
 
 
 
+let faceContainer = [];
 function changeFace(){
 faceFileInput = document.querySelector('#faceFileInput');
 if(faceFileInput.files.length > 0){
-addUploadedInformationToTheselectedContainer(faceFileInput, faceContainer);
+readUploadedInformationAndAddToTheSelectedContainer(faceFileInput, faceContainer);
 faceSeperator(faceContainer);
-cleanAndUpdateFace();
-
+cleanAndUpdateSelectContainers('#faceSelect', faces);
 }
 
 }
 
 
 
-
+let bodyContainer = [];
 function changeBody(){
 bodyFileInput = document.querySelector('#bodyFileInput');
-if(bodyFileInput.files.length > 0)
-addUploadedInformationToTheselectedContainer(bodyFileInput, bodyContainer);
+if(bodyFileInput.files.length > 0){
+readUploadedInformationAndAddToTheSelectedContainer(bodyFileInput, bodyContainer);
 bodySeperator(bodyContainer);
-cleanAndUpdateBody();
+cleanAndUpdateSelectContainers('#characterSelect', characters);
 }
 
-variable2 = [];
+}
 
-function addUploadedInformationToTheselectedContainer(container, container2){
+
+
+let reader = [];
+function readUploadedInformationAndAddToTheSelectedContainer(container, container2){
 for(let index = 0;container.files.length > index;index++){
 reader[index] = new FileReader();
 reader[index].readAsText(container.files[index]);
@@ -215,6 +212,7 @@ document.querySelector('#faceSelect').appendChild(newOption);
 }
 }
 
+
 function cleanAndUpdateBody(){
 document.querySelector('#characterSelect').innerHTML = '';
 for(let index = 0;characters.length > index; index++){
@@ -225,7 +223,25 @@ document.querySelector('#characterSelect').appendChild(newOption);
 }
 }
 
-document.querySelector('#showButton').addEventListener('click', displayFaceAndBody);
+
+
+function cleanAndUpdateSelectContainers(select,container){
+document.querySelector(select).innerHTML = '';
+for(let index = 0;container.length > index; index++){
+newOption = document.createElement('option');
+newOption.value = container[index].name;
+newOption.innerText = container[index].name;
+document.querySelector(select).appendChild(newOption);
+}
+}
+
+
+let downloadTemplateLink;
+document.querySelector('#downloadTemplate').addEventListener('click', downloadTemplate);
+
+function downloadTemplate(){
+downloadFile(template, 'template')
+}
 
 
 
@@ -240,8 +256,8 @@ document.querySelector('#showButton').addEventListener('click', displayFaceAndBo
 
 
 
-
-
+document.querySelector('#characterSelect').addEventListener('change', displayFaceAndBody);
+document.querySelector('#faceSelect').addEventListener('change', displayFaceAndBody);
 
 
 
@@ -256,18 +272,24 @@ document.querySelector('#showButton').addEventListener('click', displayFaceAndBo
 let selector2;
 
 function displayFaceAndBody(){
+//grab selector for face
 for(let index = 0; faces.length > index; index++)
 if(document.querySelector('#faceSelect').value == faces[index].name){
 selector2 = faces[index];
 }
 
+
+//grab selector for the empty character
 for(let index = 0; characters.length > index; index++)
 if(document.querySelector('#characterSelect').value == characters[index].name){
 selector = characters[index];
 }
 
 
+//mix both selector in order to display them
 everythingTogether =  selector.svg1 + selector2.svg1 + selector.svg2 + selector2.svg2 + selector.svg3;
+
+//display them
 document.querySelector('#faceAndBodyDisplay').innerHTML = `${everythingTogether}`;
 document.querySelector('#faceAndBodyDisplay > *').style.transform =  `scale(${scaleValue})`;
 }
@@ -283,6 +305,7 @@ let scaleValue = 1.4
 function updateScaleValue(){
 scaleValue = document.querySelector('#scaleInput').value;
 document.querySelector('#scaleInputParagraph').innerText = scaleValue;
+displayFaceAndBody();
 }
 
 

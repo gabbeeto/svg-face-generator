@@ -22,12 +22,17 @@
 
 <fieldset id="customSection">
 	<legend>custom section</legend>
+	<select  id="options">
+<option value="basic">basic</option>
+<option value="advanced">advanced</option>
+	</select>
 	<p>upload body</p>
 <input type="file"  id="bodyFileInput" multiple />
-<button id="add">finish</button>
+<button id="add">Add Bodies</button>
 	<p>upload faces</p>
 <input type="file"  id="faceFileInput" multiple />
-<button id="add2">finish</button>
+<button id="add2">Add Faces</button>
+<button id="downloadTemplate">download template</button>
 </fieldset>
 
 <fieldset id="displaySection">
@@ -47,13 +52,11 @@
 <option value="crazy" selected>crazy</option>
 <option value="happy">happy</option>
 <option value="happy2">happy2</option>
-<option value="happy2">happy2</option>
 <option value="confused">confused</option>
 </select>
 
 <p>scale: <span id="scaleInputParagraph">1.4</span></p>
 <input type="range" min="0.5" max="2.8" value="1.4" step="0.1" id="scaleInput"/>
-<button id="showButton">show</button>
 
 <div id="faceAndBodyDisplay">
 <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 1300" width="1300" height="1300">
