@@ -208,6 +208,29 @@ height: 25%;
 
 
 
+/*label section*/
+#labelPopUp{
+display: none;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100vw;
+height: 100vh;
+gap: 10px;
+background-color: pink;
+}
+
+#labelAmountContainer{
+display: flex;
+flex-direction: row;
+margin: 8px;
+}
+
+#labelContainer{
+overflow: scroll;
+
+}
+
 /*advance main section*/
 
 
