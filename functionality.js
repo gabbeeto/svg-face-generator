@@ -1,3 +1,6 @@
+
+
+
 let generateFacesButton = document.querySelector('#generateFaces');
 
 
@@ -10,11 +13,19 @@ let selector;
 function generateFace() {
     grabSelectorToMixItWithMissingPart('#characterSelect', characters);
 
-    for (let index = 0; index < faces.length; index++) {
+let index2 = 0; // counter
+    function loopForSlowDownload() {         //  create a loop function
+        setTimeout(function() {   //  call a 3s setTimeout when the loop is called
         let faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
-        downloadFile(faceTogether[index], `${faces[index].name}`);
-    }
-
+        downloadFile(faceTogether[index2], `${faces[index2].name}`);
+          console.log('hello');   //  your code here
+          index2++;                    //  increment the counter
+          if (index2 < faces.length) {           
+            loopForSlowDownload();             //  ..  again which will trigger another 
+          }                       //  ..  setTimeout()
+        }, 1200)
+      }
+      loopForSlowDownload();   
 }
 
 
@@ -71,6 +82,18 @@ function generateBodies() {
         downloadFile(bodyTogether[index], `${characters[index].name}`);
     }
 
+let index3 = 0;
+    function loopForSlowDownload2() {         //  create a loop function
+        setTimeout(function() {   //  call a 3s setTimeout when the loop is called
+        bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
+        downloadFile(bodyTogether[index3], `${characters[index3].name}`);
+          index3++;                    //  increment the counter
+          if (index3 < faces.length) {           //  if the counter < 10, call the loop function
+            myLoop();             //  ..  again which will trigger another 
+          }                       //  ..  setTimeout()
+        }, 1200)
+      }
+      loopForSlowDownload2();   
 }
 
 
