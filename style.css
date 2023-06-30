@@ -238,5 +238,5 @@ overflow: scroll;
 
 #advancedMain{
 display:none;
-
+flex-direction: column;
 }

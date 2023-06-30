@@ -23,8 +23,8 @@
 
 		<fieldset id="customSection">
 			<legend>custom section</legend>
-			<p>upload body</p>
 			<button id="advanced">switch to advance</button>
+			<p>upload body</p>
 			<input type="file" id="bodyFileInput" multiple />
 			<button id="add">Add Bodies</button>
 			<p>upload faces</p>
@@ -196,12 +196,34 @@
 
 	<main id="advancedMain">
 
-		<div id="optionsSection">
+		<fieldset id="customSection2">
+			<legend>custom section</legend>
+			<button id="backToBasic2">switch to basic</button>
+		</fieldset>
+
+		<fieldset id="displaySection">
+
+			<legend>Display Section</legend>
 
 
-			</select>
 
-		</div>
+
+			<p>scale: <span id="scaleInputParagraph">1.4</span></p>
+			<input type="range" min="0.5" max="2.8" value="1.4" step="0.1" id="scaleInput" />
+
+			<div id="faceAndBodyDisplay2">
+			</div>
+
+		</fieldset>
+
+
+		<section id="generate">
+		</section>
+
+
+
+
+
 	</main>
 
 
@@ -215,6 +237,3 @@
 	</body>
 
 	</html>
-
-
-

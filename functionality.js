@@ -448,3 +448,85 @@ function getTheLabels() {
     }
 
 }
+
+document.querySelector('#applyLabels').addEventListener('click', changeAdvanceStructureAccordingToLabel);
+
+function changeAdvanceStructureAccordingToLabel(){
+getLabelName();
+generateEverythingInTheAdvanceMain();
+switchToAdvanceMain();
+}
+
+
+
+
+let label = [{},{}]
+let labelItems;
+function getLabelName(){
+labelItems = document.querySelectorAll('#labelContainer > *');
+for(let index = 0; index < labelItems.length;index++){
+if(labelItems[index].firstElementChild.checked){
+label[index] = {vector: true, name:`${labelItems[index].lastElementChild.value}`}
+}
+else{
+label[index] = {vector: false, name:`${labelItems[index].lastElementChild.value}`}
+}
+}
+}
+
+
+
+let customSection2 = document.querySelector('#customSection2')
+
+function generateEverythingInTheAdvanceMain(){
+for(let index = 0;label.length > index;index++){
+paragraph = document.createElement('p');
+fileInput = document.createElement('input');
+addButton = document.createElement('button');
+
+paragraph.innerText = `upload ${label[index].name}`;
+
+fileInput.type = 'file'
+fileInput.id = `label${index}Input`;
+fileInput.multiple = true;
+
+addButton.id = `label${index}Button`;
+addButton.innerText = `add ${label[index].name}`;
+customSection2.appendChild(paragraph);
+customSection2.appendChild(fileInput);
+customSection2.appendChild(addButton);
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function switchToAdvanceMain(){
+    document.querySelector('#advancedMain').style.display = 'flex';
+    document.querySelector('#labelPopUp').style.display = 'none';
+}
+
+
+document.querySelector('#backToBasic2').addEventListener('click', goToBasicLayout);
