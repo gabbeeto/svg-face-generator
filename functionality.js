@@ -109,8 +109,8 @@ let index3 = 0;
 let faceFileInput;
 let bodyFileInput;
 
-let generateFaceButton = document.querySelector('#add');
-let generateBodyButton = document.querySelector('#add2');
+let generateBodyButton = document.querySelector('#add');
+let generateFaceButton = document.querySelector('#add2');
 
 generateFaceButton.addEventListener('click', changeFaceStructure)
 generateBodyButton.addEventListener('click', changeBodyStructure)
@@ -366,6 +366,9 @@ document.querySelector('#backToBasic1').addEventListener('click', goToBasicLayou
 
 function goToBasicLayout() {
 
+
+    document.querySelector('#advancedMain').style.display = 'none';
+    document.querySelector('#labelPopUp').style.display = 'none';
     document.querySelector('#basicMain').style.display = 'grid';
     document.querySelector('footer').style.display = 'flex';
 }
