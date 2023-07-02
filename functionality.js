@@ -671,8 +671,8 @@ function convertInformation(event) {
 
 
 
-                        label[0] = { baseline: [baseline1, '</svg>'], vector: `${label[0].vector}`, name: `${label[0].name}`, container: label[0].container, groupWithStyle: groupWithStyle }
 
+                        label[0].container[0] = { content: label[0].container[0], groupWithStyle: groupWithStyle };
 
                     }
 
@@ -730,13 +730,14 @@ function convertInformation(event) {
 
 
 
-                            label[index] = { vector: `${label[index].vector}`, name: `${label[index].name}`, container: label[index].container, groupWithStyle: groupWithStyle }
 
 
 
+                        label[index].container[index2] = { content: label[index].container[index2], groupWithStyle: groupWithStyle };
 
 
                         }
+
 
                     }
 
@@ -750,50 +751,18 @@ function convertInformation(event) {
         }
 
 
-    }
+}
 
-    function fileInputFunction(event) {
-        for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
-            if (event.target == document.querySelectorAll('.labelFile')[index]) {
+function fileInputFunction(event) {
+    for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
+        if (event.target == document.querySelectorAll('.labelFile')[index]) {
 
-                label[index].container = [];
-                readUploadedInformationAndAddToTheSelectedContainer(document.querySelectorAll('.labelFile')[index], label[index].container);
-            }
+            label[index].container = [];
+            readUploadedInformationAndAddToTheSelectedContainer(document.querySelectorAll('.labelFile')[index], label[index].container);
         }
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function generateFunction(event) {
-        document.querySelectorAll('.labelGenerate').forEach((element, index) => {
-            if (event.target == element) {
-                generateF(element, index);
-            }
-        })
-
-    }
-
-
-
-
-
-    // implement function later on
-    function generateF(element, index) {
-        console.log(index);
-        console.log(element);
-    }
+}
 
 
 
@@ -808,27 +777,24 @@ function convertInformation(event) {
 
 
 
+function generateFunction(event) {
+    document.querySelectorAll('.labelGenerate').forEach((element, index) => {
+        if (event.target == element) {
+            generateF(element, index);
+        }
+    })
 
-
-    function selectFunction(event) {
-        document.querySelectorAll('.labelSelect').forEach((element, index) => {
-            if (event.target == element) {
-                selectF(element, index);
-            }
-        })
-
-    }
+}
 
 
 
 
 
-    // implement function later on
-    function selectF(element, index) {
-        console.log(index);
-        console.log(element);
-    }
-
+// implement function later on
+function generateF(element, index) {
+    console.log(index);
+    console.log(element);
+}
 
 
 
@@ -840,10 +806,45 @@ function convertInformation(event) {
 
 
 
-    function switchToAdvanceMain() {
-        document.querySelector('#advancedMain').style.display = 'flex';
-        document.querySelector('#labelPopUp').style.display = 'none';
-    }
 
 
-    document.querySelector('#backToBasic2').addEventListener('click', goToBasicLayout);
+
+
+
+function selectFunction(event) {
+    document.querySelectorAll('.labelSelect').forEach((element, index) => {
+        if (event.target == element) {
+            selectF(element, index);
+        }
+    })
+
+}
+
+
+
+
+
+// implement function later on
+function selectF(element, index) {
+    console.log(index);
+    console.log(element);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function switchToAdvanceMain() {
+    document.querySelector('#advancedMain').style.display = 'flex';
+    document.querySelector('#labelPopUp').style.display = 'none';
+}
+
+
+document.querySelector('#backToBasic2').addEventListener('click', goToBasicLayout);
