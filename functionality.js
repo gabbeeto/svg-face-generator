@@ -13,19 +13,18 @@ let selector;
 function generateFace() {
     grabSelectorToMixItWithMissingPart('#characterSelect', characters);
 
-let index2 = 0; // counter
+    let index2 = 0; // counter
     function loopForSlowDownload() {         //  create a loop function
-        setTimeout(function() {   //  call a 3s setTimeout when the loop is called
-        let faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
-        downloadFile(faceTogether[index2], `${faces[index2].name}`);
-          console.log('hello');   //  your code here
-          index2++;                    //  increment the counter
-          if (index2 < faces.length) {           
-            loopForSlowDownload();             //  ..  again which will trigger another 
-          }                       //  ..  setTimeout()
-        }, 1200)
-      }
-      loopForSlowDownload();   
+        setTimeout(function () {   //  call a 3s setTimeout when the loop is called
+            let faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
+            downloadFile(faceTogether[index2], `${faces[index2].name}`);
+            index2++;                    //  increment the counter
+            if (index2 < faces.length) {
+                loopForSlowDownload();             //  ..  again which will trigger another 
+            }                       //  ..  setTimeout()
+        }, 1000)
+    }
+    loopForSlowDownload();
 }
 
 
@@ -82,18 +81,18 @@ function generateBodies() {
         downloadFile(bodyTogether[index], `${characters[index].name}`);
     }
 
-let index3 = 0;
+    let index3 = 0;
     function loopForSlowDownload2() {         //  create a loop function
-        setTimeout(function() {   //  call a 3s setTimeout when the loop is called
-        bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
-        downloadFile(bodyTogether[index3], `${characters[index3].name}`);
-          index3++;                    //  increment the counter
-          if (index3 < faces.length) {           //  if the counter < 10, call the loop function
-            myLoop();             //  ..  again which will trigger another 
-          }                       //  ..  setTimeout()
+        setTimeout(function () {   //  call a 3s setTimeout when the loop is called
+            bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
+            downloadFile(bodyTogether[index3], `${characters[index3].name}`);
+            index3++;                    //  increment the counter
+            if (index3 < faces.length) {           //  if the counter < 10, call the loop function
+                myLoop();             //  ..  again which will trigger another 
+            }                       //  ..  setTimeout()
         }, 1200)
-      }
-      loopForSlowDownload2();   
+    }
+    loopForSlowDownload2();
 }
 
 
@@ -132,11 +131,11 @@ let faceContainer = [];
 function changeFace() {
     faceFileInput = document.querySelector('#faceFileInput');
     if (faceFileInput.files.length > 0) {
-        readUploadedInformationAndAddToTheSelectedContainer(faceFileInput, faceContainer);
+        readUploadedInformationAndAddToTheSelectedContainer(faceFileInput, faceContainer).then(() =>{
         faceSeperator();
         cleanAndUpdateSelectContainers('#faceSelect', faces);
+        });
     }
-
 }
 
 
@@ -146,25 +145,38 @@ let bodyContainer = [];
 function changeBody() {
     bodyFileInput = document.querySelector('#bodyFileInput');
     if (bodyFileInput.files.length > 0) {
-        readUploadedInformationAndAddToTheSelectedContainer(bodyFileInput, bodyContainer);
+        readUploadedInformationAndAddToTheSelectedContainer(bodyFileInput, bodyContainer).then(() =>{
         bodySeperator();
         cleanAndUpdateSelectContainers('#characterSelect', characters);
+        });
     }
 
 }
 
 
 
-let reader = [];
-function readUploadedInformationAndAddToTheSelectedContainer(container, container2) {
-    for (let index = 0; container.files.length > index; index++) {
-        reader[index] = new FileReader();
-        reader[index].readAsText(container.files[index]);
-        reader[index].onload = function () {
-            container2[index] = reader[index].result;
-        };
+
+
+
+
+
+
+function readUploadedFile(file) {
+    return new Promise((resolve) => {
+      let reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+        resolve(reader.result);
+      }
+    });
+  }
+  
+  async function readUploadedInformationAndAddToTheSelectedContainer(fileInput, container) {
+    for (let index = 0; fileInput.files.length > index; index++) {
+      container[index] = await readUploadedFile(fileInput.files[index]);
     }
-}
+  } 
+   
 
 
 
@@ -193,7 +205,7 @@ function faceSeperator() {
         nameForFace = faceFileInput.files[index].name;
         nameForFace2 = nameForFace.substring(0, nameForFace.length - 4);
 
-        faces[index] = { name: nameForFace2, svg1: svge1, svg2: svge2};
+        faces[index] = { name: nameForFace2, svg1: svge1, svg2: svge2 };
 
     }
 }
@@ -214,7 +226,7 @@ function bodySeperator() {
         nameForBody = bodyFileInput.files[index].name;
         nameForBody2 = nameForBody.substring(0, nameForBody.length - 4);
 
-        characters[index] = {name: nameForBody2, svg1: svge1, svg2: svge2, svg3: `</svg>`};
+        characters[index] = { name: nameForBody2, svg1: svge1, svg2: svge2, svg3: `</svg>` };
     }
 }
 
@@ -322,11 +334,15 @@ function displayFaceAndBody() {
 
 
 document.querySelector('#scaleInput').addEventListener('change', updateScaleValue)
+document.querySelector('#scaleInput2').addEventListener('change', updateScaleValue)
 
 let scaleValue = 1.4
+let scaleValue2 = 1.4
 function updateScaleValue() {
     scaleValue = document.querySelector('#scaleInput').value;
+    scaleValue2 = document.querySelector('#scaleInput2').value;
     document.querySelector('#scaleInputParagraph').innerText = scaleValue;
+    document.querySelector('#scaleInputParagraph2').innerText = scaleValue2;
     displayFaceAndBody();
 }
 
@@ -371,6 +387,9 @@ function goToBasicLayout() {
     document.querySelector('#labelPopUp').style.display = 'none';
     document.querySelector('#basicMain').style.display = 'grid';
     document.querySelector('footer').style.display = 'flex';
+    document.querySelectorAll(".labelItem").forEach(element => { element.parentElement.removeChild(element) });
+    label = [{}, {}];
+
 }
 
 document.querySelector('#amountOfLabels').addEventListener(
@@ -394,12 +413,12 @@ function getTheLabels() {
 
             let input1 = document.createElement('input');
             input1.type = 'checkbox'
-            input1.checked = true;
+            input1.checked = false;
 
 
             let input2 = document.createElement('input');
             input2.type = 'text'
-            input2.value = 'faces'
+            input2.value = 'bodies'
 
             containerForLabels.appendChild(labelDiv);
             labelDiv.appendChild(input1);
@@ -414,12 +433,12 @@ function getTheLabels() {
 
             let input3 = document.createElement('input');
             input3.type = 'checkbox';
-            input3.checked = false;
+            input3.checked = true;
 
 
             let input4 = document.createElement('input');
             input4.type = 'text';
-            input4.value = 'bodies';
+            input4.value = 'faces';
 
             containerForLabels.appendChild(labelDiv2);
             labelDiv2.appendChild(input3);
@@ -451,54 +470,159 @@ function getTheLabels() {
 
 document.querySelector('#applyLabels').addEventListener('click', changeAdvanceStructureAccordingToLabel);
 
-function changeAdvanceStructureAccordingToLabel(){
-getLabelName();
-generateEverythingInTheAdvanceMain();
-switchToAdvanceMain();
+function changeAdvanceStructureAccordingToLabel() {
+    getLabelName();
+    generateEverythingInTheAdvanceMain();
+    switchToAdvanceMain();
 }
 
 
 
 
-let label = [{},{}]
+let label = [{}, {}]
 let labelItems;
-function getLabelName(){
-labelItems = document.querySelectorAll('#labelContainer > *');
-for(let index = 0; index < labelItems.length;index++){
-if(labelItems[index].firstElementChild.checked){
-label[index] = {vector: true, name:`${labelItems[index].lastElementChild.value}`}
-}
-else{
-label[index] = {vector: false, name:`${labelItems[index].lastElementChild.value}`}
-}
-}
+function getLabelName() {
+    labelItems = document.querySelectorAll('#labelContainer > *');
+    for (let index = 0; index < labelItems.length; index++) {
+        if (labelItems[index].firstElementChild.checked) {
+            label[index] = { vector: true, name: `${labelItems[index].lastElementChild.value}`, container: '' }
+        }
+        else {
+            label[index] = { vector: false, name: `${labelItems[index].lastElementChild.value}`, container: '' }
+        }
+    }
 }
 
 
 
 let customSection2 = document.querySelector('#customSection2')
+let generate2 = document.querySelector('#generate2');
+let displaySection2 = document.querySelector('#displaySection2');
 
-function generateEverythingInTheAdvanceMain(){
-for(let index = 0;label.length > index;index++){
-paragraph = document.createElement('p');
-fileInput = document.createElement('input');
-addButton = document.createElement('button');
+function generateEverythingInTheAdvanceMain() {
+    for (let index = 0; label.length > index; index++) {
 
-paragraph.innerText = `upload ${label[index].name}`;
+        // custom section:
+        paragraph = document.createElement('p');
+        paragraph.classList.add('labelItem')
+        fileInput = document.createElement('input');
+        fileInput.classList.add('labelItem')
+        fileInput.classList.add('labelFile')
+        addButton = document.createElement('button');
+         addButton.classList.add('labelItem')
+        addButton.classList.add('labelButton')
 
-fileInput.type = 'file'
-fileInput.id = `label${index}Input`;
-fileInput.multiple = true;
+        paragraph.innerText = `upload ${label[index].name}`;
 
-addButton.id = `label${index}Button`;
-addButton.innerText = `add ${label[index].name}`;
-customSection2.appendChild(paragraph);
-customSection2.appendChild(fileInput);
-customSection2.appendChild(addButton);
+        fileInput.type = 'file'
+        fileInput.id = `label${index}Input`;
+        fileInput.multiple = true;
+        fileInput.addEventListener('change', fileInputFunction )
+
+        addButton.id = `label${index}Button`;
+        addButton.innerText = `add ${label[index].name}`;
+        customSection2.appendChild(paragraph);
+        customSection2.appendChild(fileInput);
+        customSection2.appendChild(addButton);
+        addButton.addEventListener('click', addButtonFunction)
+        // generate section 
+
+        paragraph2 = document.createElement('p');
+        paragraph2.classList.add('labelItem')
+        generateButton = document.createElement('button');
+        generateButton.classList.add('labelItem')
+        generateButton.classList.add('labelGenerate')
+        generateButton.addEventListener('click', generateFunction)
+
+        paragraph2.innerText = `generate all the available ${label[index].name}`;
+        generateButton.innerText = `add ${label[index].name}`;
+
+        generate2.appendChild(paragraph2);
+        generate2.appendChild(generateButton);
+
+        // display section
+
+        paragraph3 = document.createElement('p');
+        paragraph3.classList.add('labelItem');
+        select = document.createElement('select');
+        select.classList.add('labelItem');
+        select.classList.add('labelSelect');
+        select.addEventListener('change', selectFunction)
+
+        paragraph3.innerText = `available ${label[index].name}`;
+        displaySection2.insertBefore(paragraph3, document.querySelector("#ParagraphForScaleInput2"));
+        displaySection2.insertBefore(select, document.querySelector("#ParagraphForScaleInput2"));
+    }
+
 
 }
 
 
+
+
+
+
+
+function addButtonFunction(event) {
+    for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
+        if (event.target == document.querySelectorAll('.labelButton')[index]) {
+            label[index].container = [];
+            readUploadedInformationAndAddToTheSelectedContainer(document.querySelectorAll('.labelFile')[index], label[index].container).then(() => {
+                // Code that needs to be run after the files are loaded.
+            console.log(label[index].container.length);
+              })
+
+
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function fileInputFunction(){
+// console.log(`hey`);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function generateFunction(event) {
+    document.querySelectorAll('.labelGenerate').forEach((element, index) => {
+        if (event.target == element) {
+            generateF(element, index);
+        }
+    })
+
+}
+
+
+
+
+
+// implement function later on
+function generateF(element, index) {
+    console.log(index);
+    console.log(element);
 }
 
 
@@ -516,6 +640,24 @@ customSection2.appendChild(addButton);
 
 
 
+function selectFunction(event) {
+    document.querySelectorAll('.labelSelect').forEach((element, index) => {
+        if (event.target == element) {
+            selectF(element, index);
+        }
+    })
+
+}
+
+
+
+
+
+// implement function later on
+function selectF(element, index) {
+    console.log(index);
+    console.log(element);
+}
 
 
 
@@ -523,7 +665,12 @@ customSection2.appendChild(addButton);
 
 
 
-function switchToAdvanceMain(){
+
+
+
+
+
+function switchToAdvanceMain() {
     document.querySelector('#advancedMain').style.display = 'flex';
     document.querySelector('#labelPopUp').style.display = 'none';
 }
