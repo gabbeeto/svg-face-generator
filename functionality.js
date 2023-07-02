@@ -564,18 +564,119 @@ function generateEverythingInTheAdvanceMain() {
 
 
 function addButtonFunction(event) {
-    for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
-        if (event.target == document.querySelectorAll('.labelButton')[index]) {
-            label[index].container = [];
-            readUploadedInformationAndAddToTheSelectedContainer(document.querySelectorAll('.labelFile')[index], label[index].container).then(() => {
-                // Code that needs to be run after the files are loaded.
-            console.log(label[index].container.length);
-              })
+convertInformation(event);
+}
+
+let labelBaseline1End;
+
+let baseline1;
+
+let group1;
+let group2;
+let group3;
+let style1;
+let style2;
+let style3;
 
 
-        }
-    }
+let groupArray = [];
 
+let splittedStyleArray = [];
+let splittedGroupArray = [];
+let styleArray = [];
+
+
+let splittedStyleAndAttributeArrayClasses = [];
+let classInStyle1;
+let classInStyle2;
+let classInStyle3;
+
+
+let attributeInStyle1;
+let attributeInStyle2;
+let attributeInStyle3;
+
+let splittedGroupArrayClasses = [];
+let classInGroup1;
+let classInGroup2;
+let classInGroup3;
+
+function convertInformation(event){
+for(let index =0;index < document.querySelectorAll('.labelButton').length;index++)
+if(event.target.id[5] == index){
+
+console.log(`${index}`);
+
+for(let index2 in label[index].container){
+if(index2 == 0){
+// in the first content label from the first content we get the baseline for the entire page
+	
+labelBaseline1End = label[0].container[0].indexOf('>');
+
+baseline1 = label[0].container[0].substring(0,labelBaseline1End +1)
+
+if(label[0].vector){
+group1 = label[0].container[0].indexOf(`<g id="${label[0].name}"`);
+group2 = label[0].container[0].indexOf('</g>', group1) +4;
+group3 = label[0].container[0].substring(group1, group2)
+groupArray[index2] =group3;
+
+style1 = label[0].container[0].indexOf('<style');
+style2 = label[0].container[0].indexOf('</style>') +7;
+style3 = label[0].container[0].substring(style1, style2);
+styleArray[index2] = style3;
+
+
+splittedStyleArray = styleArray[index2].split('}')
+splittedGroupArray = groupArray[index2].split('/>')
+
+	// removes </g>
+splittedGroupArray.length -= 1;
+splittedStyleArray.length -= 1;
+
+
+for(let index3 in splittedStyleArray){
+
+classInStyle1 = splittedStyleArray[index3].indexOf(`.`) ;
+classInStyle2 = splittedStyleArray[index3].indexOf(`{`, classInStyle1) -1;
+classInStyle3 = splittedStyleArray[index3].substring(classInStyle1, classInStyle2)
+
+
+attributeInStyle1 = splittedStyleArray[index3].indexOf(`{`) + 1 ;
+//attributeInStyle2 = splittedStyleArray[index3].indexOf(`}`, attributeInStyle1) ;
+attributeInStyle3 = splittedStyleArray[index3].substring(attributeInStyle1, splittedStyleArray[index3].length )
+
+splittedStyleAndAttributeArrayClasses[index3] = {styleName: classInStyle3, attribute: attributeInStyle3};
+}
+
+
+for(let index3 in splittedGroupArray)
+{
+
+classInGroup1 = splittedGroupArray[index3].indexOf(`class="`) +7;
+classInGroup2 = splittedGroupArray[index3].indexOf(`"`, classInGroup1);
+classInGroup3 = splittedGroupArray[index3].substring(classInGroup1, classInGroup2)
+splittedGroupArrayClasses[index3] = classInGroup3;
+
+
+}
+
+
+
+}
+
+
+
+
+label[0] = {baseline: [baseline1,'</svg>'] ,vector: `${label[0].vector}`, name: `${label[0].name}`, container: label[0].container, }
+}
+
+
+
+console.log(label[index].container[index2]);
+}
+
+}
 }
 
 
@@ -584,13 +685,14 @@ function addButtonFunction(event) {
 
 
 
+function fileInputFunction(event){
+for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
+if(event.target == document.querySelectorAll('.labelFile')[index]) {
 
+label[index].container = [];
+readUploadedInformationAndAddToTheSelectedContainer(document.querySelectorAll('.labelFile')[index], label[index].container);}
+}
 
-
-
-
-function fileInputFunction(){
-// console.log(`hey`);
 }
 
 
