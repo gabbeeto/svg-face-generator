@@ -607,12 +607,14 @@ let nameForLabel;
 
 
 
+
+let defAndUse = [];
+
 function convertInformation(event) {
     for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++)
 
         if (event.target.id[5] == index) {
 
-            // console.log(`${index}`);
 
             for (let index2 in label[index].container) {
                 if (index2 == 0 && index == 0) {
@@ -639,6 +641,7 @@ function convertInformation(event) {
 
                         // removes </g>
                         splittedGroupArray.length -= 1;
+                        // removes <styles/>
                         splittedStyleArray.length -= 1;
 
 
@@ -678,16 +681,17 @@ function convertInformation(event) {
 
                     }
                     else {
-                        alert('im not a vector!!');
+                        defAndUse[index2] = get_from_svg(label[index].container[0])[label[index].name];
 
-
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
+                        label[index].container[0] = { content: label[index].container[0],defWithUse : defAndUse[index2],name: nameForLabel};
+                        label[index] = { vector: label[index].vector, container: label[index].container, baselineStart: baseline1, baselineEnd: '</svg>' };
                     }
 
 
 
 
 
-                    console.log(label[index].container[index2]);
                 }
 
 
@@ -709,9 +713,8 @@ function convertInformation(event) {
                         splittedGroupArray = groupArray[index2].split('/>')
 
                         // removes </g>
-                        splittedGroupArray.length -= 1;
-                        splittedStyleArray.length -= 1;
-
+                        splittedGroupArray.pop();
+                        splittedStyleArray.pop();
 
                         for (let index3 in splittedStyleArray) {
 
@@ -754,7 +757,16 @@ function convertInformation(event) {
 
 
                     else {
-                        alert('im not a vector!!');
+
+
+                        defAndUse[index2] = get_from_svg(label[index].container[index2])[label[index].name];
+
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
+                        label[index].container[index2] = { content: label[index].container[index2], defWithUse : defAndUse[index2], name: nameForLabel };
+
+
+
+
 
 
                     }
@@ -771,6 +783,32 @@ function convertInformation(event) {
 
 
 }
+
+
+                        function get_from_svg(svg_data) {
+                            // -> load def images
+                            const defs = svg_data.substring(svg_data.indexOf("<defs>"), svg_data.indexOf("</defs>")) // get <defs>
+                            const defImagesA = defs.match(/<image.*\/>/g); // list all <images> in <defs>
+                            // create a dict that maps all images to their ids.
+                            let defImages = {};
+                            for (let defImage of defImagesA) {
+                                const id = defImage.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
+                                defImages[id] = defImage;
+                            }
+                        
+                            // -> load use tags and corresponding def
+                            const useTags = svg_data.match(/<use.*\/>/g); // get all <use>-tags
+                            // create a list of all <use> tags with their <image>-es
+                            let uses = {};
+                            for (let useTag of useTags) {
+                                const defImageId = useTag.match(/href="#([A-Za-z0-9 .\-_]*)"/)[1];
+                                const id = useTag.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
+                                // get the <image> by id and store it next to the <use>
+                                uses[id] = { use: useTag, imgDef: defImages[defImageId] }
+                            }
+                            return uses
+                        }
+
 
 function fileInputFunction(event) {
     for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
