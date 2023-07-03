@@ -603,6 +603,7 @@ let classInGroup3;
 
 let groupWithStyle = [];
 
+let nameForLabel;
 
 
 
@@ -611,25 +612,25 @@ function convertInformation(event) {
 
         if (event.target.id[5] == index) {
 
-            console.log(`${index}`);
+            // console.log(`${index}`);
 
             for (let index2 in label[index].container) {
-                if (index2 == 0) {
+                if (index2 == 0 && index == 0) {
                     // in the first content label from the first content we get the baseline for the entire page
 
-                    labelBaseline1End = label[0].container[0].indexOf('>');
+                    labelBaseline1End = label[index].container[0].indexOf('>');
 
-                    baseline1 = label[0].container[0].substring(0, labelBaseline1End + 1)
+                    baseline1 = label[index].container[0].substring(0, labelBaseline1End + 1)
 
                     if (label[0].vector) {
-                        group1 = label[0].container[0].indexOf(`<g id="${label[0].name}"`);
-                        group2 = label[0].container[0].indexOf('</g>', group1) + 4;
-                        group3 = label[0].container[0].substring(group1, group2)
+                        group1 = label[index].container[0].indexOf(`<g id="${label[0].name}"`);
+                        group2 = label[index].container[0].indexOf('</g>', group1) + 4;
+                        group3 = label[index].container[0].substring(group1, group2)
                         groupArray[index2] = group3;
 
-                        style1 = label[0].container[0].indexOf('<style');
-                        style2 = label[0].container[0].indexOf('</style>') + 7;
-                        style3 = label[0].container[0].substring(style1, style2);
+                        style1 = label[index].container[0].indexOf('<style');
+                        style2 = label[index].container[0].indexOf('</style>') + 7;
+                        style3 = label[index].container[0].substring(style1, style2);
                         styleArray[index2] = style3;
 
 
@@ -649,7 +650,6 @@ function convertInformation(event) {
 
 
                             attributeInStyle1 = splittedStyleArray[index3].indexOf(`{`) + 1;
-                            //attributeInStyle2 = splittedStyleArray[index3].indexOf(`}`, attributeInStyle1) ;
                             attributeInStyle3 = splittedStyleArray[index3].substring(attributeInStyle1, splittedStyleArray[index3].length)
 
                             splittedStyleAndAttributeArrayClasses[index3] = { styleName: classInStyle3, attribute: attributeInStyle3 };
@@ -672,81 +672,100 @@ function convertInformation(event) {
 
 
 
-                        label[0].container[0] = { content: label[0].container[0], groupWithStyle: groupWithStyle };
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
+                        label[index].container[0] = { content: label[index].container[0], groupWithStyle: groupWithStyle,name: nameForLabel};
+                        label[index] = { vector: label[index].vector, container: label[index].container, baselineStart: baseline1, baselineEnd: '</svg>' };
 
                     }
-
-
                     else {
-
-
-                        if (label[index].vector) {
-                            group1 = label[index].container[index2].indexOf(`<g id="${label[0].name}"`);
-                            group2 = label[index].container[index2].indexOf('</g>', group1) + 4;
-                            group3 = label[index].container[index2].substring(group1, group2)
-                            groupArray[index2] = group3;
-
-                            style1 = label[index].container[index2].indexOf('<style');
-                            style2 = label[index].container[index2].indexOf('</style>') + 7;
-                            style3 = label[index].container[index2].substring(style1, style2);
-                            styleArray[index2] = style3;
-
-
-                            splittedStyleArray = styleArray[index2].split('}')
-                            splittedGroupArray = groupArray[index2].split('/>')
-
-                            // removes </g>
-                            splittedGroupArray.length -= 1;
-                            splittedStyleArray.length -= 1;
-
-
-                            for (let index3 in splittedStyleArray) {
-
-                                classInStyle1 = splittedStyleArray[index3].indexOf(`.`);
-                                classInStyle2 = splittedStyleArray[index3].indexOf(`{`, classInStyle1) - 1;
-                                classInStyle3 = splittedStyleArray[index3].substring(classInStyle1, classInStyle2)
-
-
-                                attributeInStyle1 = splittedStyleArray[index3].indexOf(`{`) + 1;
-                                //attributeInStyle2 = splittedStyleArray[index3].indexOf(`}`, attributeInStyle1) ;
-                                attributeInStyle3 = splittedStyleArray[index3].substring(attributeInStyle1, splittedStyleArray[index3].length)
-
-                                splittedStyleAndAttributeArrayClasses[index3] = { styleName: classInStyle3, attribute: attributeInStyle3 };
-                            }
-
-
-                            for (let index3 in splittedGroupArray) {
-                                classInGroup1 = splittedGroupArray[index3].indexOf(`class="`) + 7;
-                                classInGroup2 = splittedGroupArray[index3].indexOf(`"`, classInGroup1);
-                                classInGroup3 = splittedGroupArray[index3].substring(classInGroup1, classInGroup2);
-                                splittedGroupArrayClasses[index3] = classInGroup3;
-                                for (let index4 = 0; index4 < splittedStyleAndAttributeArrayClasses.length; index4++) {
-                                    if (`.${splittedGroupArrayClasses[index3]}` == splittedStyleAndAttributeArrayClasses[index4].styleName) {
-                                        groupWithStyle[index3] = { style: `${splittedStyleAndAttributeArrayClasses[index4].styleName} { ${splittedStyleAndAttributeArrayClasses[index4].attribute} }`, styleIndex: index4, group: `${splittedGroupArray[index3]}>` };
-                                    }
-                                }
-                            }
-
-
-
-
-
-
-
-                        label[index].container[index2] = { content: label[index].container[index2], groupWithStyle: groupWithStyle };
-
-
-                        }
+                        alert('im not a vector!!');
 
 
                     }
+
+
 
 
 
                     console.log(label[index].container[index2]);
                 }
 
+
+                else {
+
+                    if (label[index].vector) {
+                        group1 = label[index].container[index2].indexOf(`<g id="${label[index].name}"`);
+                        group2 = label[index].container[index2].indexOf('</g>', group1) + 4;
+                        group3 = label[index].container[index2].substring(group1, group2)
+                        groupArray[index2] = group3;
+
+                        style1 = label[index].container[index2].indexOf('<style');
+                        style2 = label[index].container[index2].indexOf('</style>') + 7;
+                        style3 = label[index].container[index2].substring(style1, style2);
+                        styleArray[index2] = style3;
+
+
+                        splittedStyleArray = styleArray[index2].split('}')
+                        splittedGroupArray = groupArray[index2].split('/>')
+
+                        // removes </g>
+                        splittedGroupArray.length -= 1;
+                        splittedStyleArray.length -= 1;
+
+
+                        for (let index3 in splittedStyleArray) {
+
+                            classInStyle1 = splittedStyleArray[index3].indexOf(`.`);
+                            classInStyle2 = splittedStyleArray[index3].indexOf(`{`, classInStyle1) - 1;
+                            classInStyle3 = splittedStyleArray[index3].substring(classInStyle1, classInStyle2)
+
+
+                            attributeInStyle1 = splittedStyleArray[index3].indexOf(`{`) + 1;
+                            attributeInStyle3 = splittedStyleArray[index3].substring(attributeInStyle1, splittedStyleArray[index3].length)
+
+                            splittedStyleAndAttributeArrayClasses[index3] = { styleName: classInStyle3, attribute: attributeInStyle3 };
+                        }
+
+
+                        for (let index3 in splittedGroupArray) {
+                            classInGroup1 = splittedGroupArray[index3].indexOf(`class="`) + 7;
+                            classInGroup2 = splittedGroupArray[index3].indexOf(`"`, classInGroup1);
+                            classInGroup3 = splittedGroupArray[index3].substring(classInGroup1, classInGroup2);
+                            splittedGroupArrayClasses[index3] = classInGroup3;
+                            for (let index4 = 0; index4 < splittedStyleAndAttributeArrayClasses.length; index4++) {
+                                if (`.${splittedGroupArrayClasses[index3]}` == splittedStyleAndAttributeArrayClasses[index4].styleName) {
+                                    groupWithStyle[index3] = { style: `${splittedStyleAndAttributeArrayClasses[index4].styleName} { ${splittedStyleAndAttributeArrayClasses[index4].attribute} }`, styleIndex: index4, group: `${splittedGroupArray[index3]}>` };
+                                }
+                            }
+
+                        }
+
+
+
+
+
+
+
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
+                        label[index].container[index2] = { content: label[index].container[index2], groupWithStyle: groupWithStyle, name: nameForLabel };
+
+
+                    }
+
+
+                    else {
+                        alert('im not a vector!!');
+
+
+                    }
+
+
+                }
+
+
             }
+
+
 
         }
 
