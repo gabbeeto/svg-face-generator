@@ -13,18 +13,19 @@ let selector;
 function generateFace() {
     grabSelectorToMixItWithMissingPart('#characterSelect', characters);
 
-    let index2 = 0; // counter
-    function loopForSlowDownload() {         //  create a loop function
-        setTimeout(function () {   //  call a 3s setTimeout when the loop is called
-            let faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
-            downloadFile(faceTogether[index2], `${faces[index2].name}`);
-            index2++;                    //  increment the counter
-            if (index2 < faces.length) {
-                loopForSlowDownload();             //  ..  again which will trigger another 
-            }                       //  ..  setTimeout()
-        }, 1000)
-    }
-    loopForSlowDownload();
+var zip = new JSZip();
+for(let index2 in faces){
+let faceTogether = faces.map(face => selector.svg1 + face.svg1 + selector.svg2 + face.svg2 + selector.svg3);
+zip.file(`${faces[index2].name}.svg`,faceTogether[index2]);
+}
+
+
+zip.generateAsync({type:"blob"})
+.then(function(content) {
+    // see FileSaver.js
+    saveAs(content, "faces.zip");
+});
+
 }
 
 
@@ -73,26 +74,21 @@ let bodyTogether;
 
 generateBodiesButton.addEventListener('click', generateBodies);
 
-
 function generateBodies() {
+    var zip = new JSZip();
     grabSelectorToMixItWithMissingPart('#faceSelect', faces);
     for (let index = 0; index < characters.length; index++) {
         bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
-        downloadFile(bodyTogether[index], `${characters[index].name}`);
+        zip.file(`${characters[index].name}.svg`, bodyTogether[index]);
     }
 
-    let index3 = 0;
-    function loopForSlowDownload2() {         //  create a loop function
-        setTimeout(function () {   //  call a 3s setTimeout when the loop is called
-            bodyTogether = characters.map(character => character.svg1 + selector.svg1 + character.svg2 + selector.svg2 + character.svg3);
-            downloadFile(bodyTogether[index3], `${characters[index3].name}`);
-            index3++;                    //  increment the counter
-            if (index3 < faces.length) {           //  if the counter < 10, call the loop function
-                myLoop();             //  ..  again which will trigger another 
-            }                       //  ..  setTimeout()
-        }, 1200)
-    }
-    loopForSlowDownload2();
+
+zip.generateAsync({type:"blob"})
+.then(function(content) {
+    // see FileSaver.js
+    saveAs(content, "body.zip");
+});
+
 }
 
 
@@ -534,11 +530,11 @@ function generateEverythingInTheAdvanceMain() {
         generateButton = document.createElement('button');
         generateButton.classList.add('labelItem')
         generateButton.classList.add('labelGenerate')
-        generateButton.addEventListener('click', generateFunction)
 
         paragraph2.innerText = `generate all the available ${label[index].name}`;
-        generateButton.innerText = `add ${label[index].name}`;
+        generateButton.innerText = `generate ${label[index].name}`;
 
+        generateButton.addEventListener('click', generateFunction)
         generate2.appendChild(paragraph2);
         generate2.appendChild(generateButton);
 
@@ -836,8 +832,8 @@ for(let index = 0; index < document.querySelectorAll('.labelButton').length; ind
 if(document.querySelectorAll('.labelButton')[index] == event.target){
 
 for(let index2 in label[index].container){
-console.log(`index:${index}, index2:${index2}`);
-console.log(label[index].container[index2]);
+// console.log(`index:${index}, index2:${index2}`);
+// console.log(label[index].container[index2]);
 
 
 
@@ -899,23 +895,23 @@ function fileInputFunction(event) {
 
 
 function generateFunction(event) {
-    document.querySelectorAll('.labelGenerate').forEach((element, index) => {
-        if (event.target == element) {
-            generateF(element, index);
-        }
-    })
+for(let index in document.querySelectorAll('.labelGenerate')){
+if(event.target == document.querySelectorAll('.labelGenerate')[index]){
+for(let index2 in label[index].container){
+
 
 }
 
 
 
-
-
-// implement function later on
-function generateF(element, index) {
-    console.log(index);
-    console.log(element);
 }
+
+}
+
+}
+
+
+
 
 
 
