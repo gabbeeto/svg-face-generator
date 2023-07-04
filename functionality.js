@@ -892,23 +892,49 @@ function fileInputFunction(event) {
 
 
 
+let mainFrame = [];
 
-
+let arrayOFSelectors = [];
 function generateFunction(event) {
 for(let index in document.querySelectorAll('.labelGenerate')){
 if(event.target == document.querySelectorAll('.labelGenerate')[index]){
-for(let index2 in label[index].container){
 
+
+for(let index2 in label){
+if (index2 != index)
+arrayOFSelectors[index2] = document.querySelectorAll(`.labelSelect`)[index2].value
+}
+
+
+for(let index2 in arrayOFSelectors){
+
+
+
+
+if(arrayOFSelectors){
+for(let index3 in label[index].container[index2]){
+
+if(label[index].container[index2].vector){
+for(let index4 in label[index].container[index2].groupWithStyle){}
+}
+
+else{
+for(let index4 in label[index].container[index2].defAndUse){}
+}
+
+
+}
+}
 
 }
 
 
 
 }
-
+}
 }
 
-}
+
 
 
 
