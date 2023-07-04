@@ -499,6 +499,8 @@ let customSection2 = document.querySelector('#customSection2')
 let generate2 = document.querySelector('#generate2');
 let displaySection2 = document.querySelector('#displaySection2');
 
+
+
 function generateEverythingInTheAdvanceMain() {
     for (let index = 0; label.length > index; index++) {
 
@@ -564,7 +566,9 @@ function generateEverythingInTheAdvanceMain() {
 
 
 function addButtonFunction(event) {
+
     convertInformation(event);
+    moveInformationIntoTheLabelSelect(event);
 }
 
 let labelBaseline1End;
@@ -611,8 +615,7 @@ let nameForLabel;
 let defAndUse = [];
 
 function convertInformation(event) {
-    for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++)
-
+    for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
         if (event.target.id[5] == index) {
 
 
@@ -675,16 +678,16 @@ function convertInformation(event) {
 
 
 
-                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
-                        label[index].container[0] = { content: label[index].container[0], groupWithStyle: groupWithStyle,name: nameForLabel};
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
+                        label[index].container[0] = { content: label[index].container[0], groupWithStyle: groupWithStyle, name: nameForLabel };
                         label[index] = { vector: label[index].vector, container: label[index].container, baselineStart: baseline1, baselineEnd: '</svg>' };
 
                     }
                     else {
                         defAndUse[index2] = get_from_svg(label[index].container[0])[label[index].name];
 
-                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
-                        label[index].container[0] = { content: label[index].container[0],defWithUse : defAndUse[index2],name: nameForLabel};
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
+                        label[index].container[0] = { content: label[index].container[0], defWithUse: defAndUse[index2], name: nameForLabel };
                         label[index] = { vector: label[index].vector, container: label[index].container, baselineStart: baseline1, baselineEnd: '</svg>' };
                     }
 
@@ -749,7 +752,7 @@ function convertInformation(event) {
 
 
 
-                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
                         label[index].container[index2] = { content: label[index].container[index2], groupWithStyle: groupWithStyle, name: nameForLabel };
 
 
@@ -761,8 +764,8 @@ function convertInformation(event) {
 
                         defAndUse[index2] = get_from_svg(label[index].container[index2])[label[index].name];
 
-                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length -4)
-                        label[index].container[index2] = { content: label[index].container[index2], defWithUse : defAndUse[index2], name: nameForLabel };
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
+                        label[index].container[index2] = { content: label[index].container[index2], defWithUse: defAndUse[index2], name: nameForLabel };
 
 
 
@@ -781,33 +784,94 @@ function convertInformation(event) {
 
         }
 
+    }
+
 
 }
 
 
-                        function get_from_svg(svg_data) {
-                            // -> load def images
-                            const defs = svg_data.substring(svg_data.indexOf("<defs>"), svg_data.indexOf("</defs>")) // get <defs>
-                            const defImagesA = defs.match(/<image.*\/>/g); // list all <images> in <defs>
-                            // create a dict that maps all images to their ids.
-                            let defImages = {};
-                            for (let defImage of defImagesA) {
-                                const id = defImage.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
-                                defImages[id] = defImage;
-                            }
-                        
-                            // -> load use tags and corresponding def
-                            const useTags = svg_data.match(/<use.*\/>/g); // get all <use>-tags
-                            // create a list of all <use> tags with their <image>-es
-                            let uses = {};
-                            for (let useTag of useTags) {
-                                const defImageId = useTag.match(/href="#([A-Za-z0-9 .\-_]*)"/)[1];
-                                const id = useTag.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
-                                // get the <image> by id and store it next to the <use>
-                                uses[id] = { use: useTag, imgDef: defImages[defImageId] }
-                            }
-                            return uses
-                        }
+function get_from_svg(svg_data) {
+    // -> load def images
+    const defs = svg_data.substring(svg_data.indexOf("<defs>"), svg_data.indexOf("</defs>")) // get <defs>
+    const defImagesA = defs.match(/<image.*\/>/g); // list all <images> in <defs>
+    // create a dict that maps all images to their ids.
+    let defImages = {};
+    for (let defImage of defImagesA) {
+        const id = defImage.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
+        defImages[id] = defImage;
+    }
+
+    // -> load use tags and corresponding def
+    const useTags = svg_data.match(/<use.*\/>/g); // get all <use>-tags
+    // create a list of all <use> tags with their <image>-es
+    let uses = {};
+    for (let useTag of useTags) {
+        const defImageId = useTag.match(/href="#([A-Za-z0-9 .\-_]*)"/)[1];
+        const id = useTag.match(/id="([A-Za-z0-9 .\-_]*)"/)[1];
+        // get the <image> by id and store it next to the <use>
+        uses[id] = { use: useTag, imgDef: defImages[defImageId] }
+    }
+    return uses
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function moveInformationIntoTheLabelSelect(event){
+
+
+for(let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
+
+if(document.querySelectorAll('.labelButton')[index] == event.target){
+
+for(let index2 in label[index].container){
+console.log(`index:${index}, index2:${index2}`);
+console.log(label[index].container[index2]);
+
+
+
+let OptionForSelectLabel = document.createElement('option');
+OptionForSelectLabel.innerText = label[index].container[index2].name;
+OptionForSelectLabel.value = label[index].container[index2].name;
+
+document.querySelectorAll('.labelSelect')[index].appendChild(OptionForSelectLabel);
+
+
+}
+    
+}
+
+
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function fileInputFunction(event) {
