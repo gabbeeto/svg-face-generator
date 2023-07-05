@@ -891,48 +891,77 @@ function fileInputFunction(event) {
 
 
 
+let groupSection = [];
 
-let mainFrame = [];
+let indexo4 = 0;
+let styleSection = [];
 
-let arrayOFSelectors = [];
+let useSection = [];
+let defSection = [];
+
+let arrayOFSelectors = [{},{}];
 function generateFunction(event) {
+
 for(let index in document.querySelectorAll('.labelGenerate')){
 if(event.target == document.querySelectorAll('.labelGenerate')[index]){
 
 
-for(let index2 in label){
-if (index2 != index)
-arrayOFSelectors[index2] = document.querySelectorAll(`.labelSelect`)[index2].value
+for(let index2 =0,index3 = 0;index2 < document.querySelectorAll('.labelSelect').length;index2++){
+
+console.log(`index:${index}, index2: ${index2}, index3: ${index3}`);
+if (index2 != index){
+arrayOFSelectors[index3] = {selectorName:document.querySelectorAll(`.labelSelect`)[index2].value, 'index':index2}
+index3 = index3 +1;
+
+
+}
 }
 
-
 for(let index2 in arrayOFSelectors){
+for(let index3 in label[arrayOFSelectors[index2].index].container){
 
+if(label[arrayOFSelectors[index2].index].container[index3].name == arrayOFSelectors[index2].selectorName){
 
+if(label[arrayOFSelectors[index2].index].vector == true){
+for(let index4 in label[arrayOFSelectors[index2].index].container[index3].groupWithStyle){
+console.log(`arrayOFSelectors[index2].index : ${arrayOFSelectors[index2].index}, index3: ${index3}, index4: ${index4}`)
+console.log(label[arrayOFSelectors[index2].index].container[index3].groupWithStyle[index4]);
+// push parts to sections
+styleSection.push(label[arrayOFSelectors[index2].index].container[index3].groupWithStyle[index4].style);
+styleSection.push('\n');
+groupSection.push(label[arrayOFSelectors[index2].index].container[index3].groupWithStyle[index4].group);
+}
 
-
-if(arrayOFSelectors){
-for(let index3 in label[index].container[index2]){
-
-if(label[index].container[index2].vector){
-for(let index4 in label[index].container[index2].groupWithStyle){}
 }
 
 else{
-for(let index4 in label[index].container[index2].defAndUse){}
+//push parts to sections
+console.log(label[arrayOFSelectors[index2].index].container[index3].defWithUse);
+useSection.push(label[arrayOFSelectors[index2].index].container[index3].defWithUse.use);
+defSection.push(label[arrayOFSelectors[index2].index].container[index3].defWithUse.imgDef);
+
+}
+
 }
 
 
 }
-}
-
-}
-
 
 
 }
+
+    
+}
+
+
+
+
+
 }
 }
+
+
+
 
 
 
