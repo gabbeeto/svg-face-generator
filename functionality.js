@@ -610,6 +610,10 @@ let nameForLabel;
 
 let defAndUse = [];
 
+let parts = {};
+
+
+let splittedGroupArrayWithNewClass = [];
 function convertInformation(event) {
     for (let index = 0; index < document.querySelectorAll('.labelButton').length; index++) {
         if (event.target.id[5] == index) {
@@ -620,50 +624,52 @@ function convertInformation(event) {
 
 
                 if (label[index].vector) {
-                    group1 = label[index].container[index2].indexOf(`<g id="${label[index].name}"`);
-                    group2 = label[index].container[index2].indexOf('</g>', group1) + 4;
-                    group3 = label[index].container[index2].substring(group1, group2)
-                    groupArray[index2] = group3;
+                    parts = {groupArray: [], styleArray: [], splittedGroupArray: [], splittedStyleArray: [],groupWithStyle: [],splittedStyleAndAttributeArrayClasses: [], splittedGroupArrayClasses: [], splittedGroupArrayWithNewClass: []}
+                    label[index].container[index2] = {content: label[index].container[index2], parts: parts}
 
-                    style1 = label[index].container[index2].indexOf('<style');
-                    style2 = label[index].container[index2].indexOf('</style>') + 7;
-                    style3 = label[index].container[index2].substring(style1, style2);
-                    styleArray[index2] = style3;
+                    group1 = label[index].container[index2].content.indexOf(`<g id="${label[index].name}"`);
+                    group2 = label[index].container[index2].content.indexOf('</g>', group1) + 4;
+                    group3 = label[index].container[index2].content.substring(group1, group2)
+                    label[index].container[index2].parts.groupArray[index2] = group3;
+
+                    style1 = label[index].container[index2].content.indexOf('<style');
+                    style2 = label[index].container[index2].content.indexOf('</style>') + 7;
+                    style3 = label[index].container[index2].content.substring(style1, style2);
+                    label[index].container[index2].parts.styleArray[index2] = style3;
 
 
-                    splittedStyleArray = styleArray[index2].split('}')
-                    splittedGroupArray = groupArray[index2].split('/>')
+                    label[index].container[index2].parts.splittedStyleArray = label[index].container[index2].parts.styleArray[index2].split('}')
+                    label[index].container[index2].parts.splittedGroupArray = label[index].container[index2].parts.groupArray[index2].split('/>')
 
                     // removes </g>
-                    splittedGroupArray.pop();
-                    splittedStyleArray.pop();
+                    label[index].container[index2].parts.splittedGroupArray.pop();
+                    label[index].container[index2].parts.splittedStyleArray.pop();
 
-                    for (let index3 in splittedStyleArray) {
+                    for (let index3 in label[index].container[index2].parts.splittedStyleArray) {
 
-                        classInStyle1 = splittedStyleArray[index3].indexOf(`.`);
-                        classInStyle2 = splittedStyleArray[index3].indexOf(`{`, classInStyle1) - 1;
-                        classInStyle3 = splittedStyleArray[index3].substring(classInStyle1, classInStyle2)
+                        classInStyle1 = label[index].container[index2].parts.splittedStyleArray[index3].indexOf(`.`);
+                        classInStyle2 = label[index].container[index2].parts.splittedStyleArray[index3].indexOf(`{`, classInStyle1) - 1;
+                        classInStyle3 = label[index].container[index2].parts.splittedStyleArray[index3].substring(classInStyle1, classInStyle2)
 
 
-                        attributeInStyle1 = splittedStyleArray[index3].indexOf(`{`) + 1;
-                        attributeInStyle3 = splittedStyleArray[index3].substring(attributeInStyle1, splittedStyleArray[index3].length)
+                        attributeInStyle1 = label[index].container[index2].parts.splittedStyleArray[index3].indexOf(`{`) + 1;
+                        attributeInStyle3 = label[index].container[index2].parts.splittedStyleArray[index3].substring(attributeInStyle1, label[index].container[index2].parts.splittedStyleArray[index3].length)
 
-                        splittedStyleAndAttributeArrayClasses[index3] = { styleName: classInStyle3, attribute: attributeInStyle3 };
+                        label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses[index3] = { styleName: classInStyle3, attribute: attributeInStyle3 };
                     }
 
 
-                    for (let index3 in splittedGroupArray) {
-                        classInGroup1 = splittedGroupArray[index3].indexOf(`class="`) + 7;
-                        classInGroup2 = splittedGroupArray[index3].indexOf(`"`, classInGroup1);
-                        classInGroup3 = splittedGroupArray[index3].substring(classInGroup1, classInGroup2);
-                        splittedGroupArrayClasses[index3] = classInGroup3;
-                        for (let index4 = 0; index4 < splittedStyleAndAttributeArrayClasses.length; index4++) {
+                    for (let index3 in label[index].container[index2].parts.splittedGroupArray) {
+                        classInGroup1 = label[index].container[index2].parts.splittedGroupArray[index3].indexOf(`class="`) + 7;
+                        classInGroup2 = label[index].container[index2].parts.splittedGroupArray[index3].indexOf(`"`, classInGroup1);
+                        classInGroup3 = label[index].container[index2].parts.splittedGroupArray[index3].substring(classInGroup1, classInGroup2);
+                        label[index].container[index2].parts.splittedGroupArrayClasses[index3] = classInGroup3;
+                        for (let index4 = 0; index4 < label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses.length; index4++) {
 
-                            if (`.${splittedGroupArrayClasses[index3]}` == splittedStyleAndAttributeArrayClasses[index4].styleName) {
-                                splittedGroupArray[index3].replace(splittedGroupArrayClasses[index3],`s${index2}-${index3}`);
-                                splittedGroupArrayClasses[index3] = `s${index2}-${index3}`;
-                                splittedStyleAndAttributeArrayClasses[index4].styleName = `s${index2}-${index3}`;
-                                groupWithStyle[index3] = { style: `${splittedStyleAndAttributeArrayClasses[index4].styleName} { ${splittedStyleAndAttributeArrayClasses[index4].attribute} }`, styleIndex: index4, group: `${splittedGroupArray[index3]}>` };
+                            if (`.${label[index].container[index2].parts.splittedGroupArrayClasses[index3]}` == label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses[index4].styleName) {
+                                label[index].container[index2].parts.splittedGroupArrayWithNewClass[index3] = label[index].container[index2].parts.splittedGroupArray[index3].replace(`class="${label[index].container[index2].parts.splittedGroupArrayClasses[index3]}`,`class="s${index2}-${index3}`);
+                                label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses[index4].styleName = `s${index2}-${index3}`;
+                                label[index].container[index2].parts.groupWithStyle[index3] = { style: `${label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses[index4].styleName} { ${label[index].container[index2].parts.splittedStyleAndAttributeArrayClasses[index4].attribute} }`, styleIndex: index4, group: `${label[index].container[index2].parts.splittedGroupArrayWithNewClass[index3]}>` };
                             }
 
                         }
@@ -677,17 +683,17 @@ function convertInformation(event) {
 
                     if (index2 == 0 && index == 0) {
 
-                        labelBaseline1End = label[index].container[0].indexOf('>');
+                        labelBaseline1End = label[index].container[0].content.indexOf('>');
 
-                        baseline1 = label[index].container[0].substring(0, labelBaseline1End + 1);
+                        baseline1 = label[index].container[0].content.substring(0, labelBaseline1End + 1);
                         nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
-                        label[index].container[0] = { content: label[index].container[0], groupWithStyle: groupWithStyle, name: nameForLabel };
+                        label[index].container[0] = { parts:label[index].container[0].parts, content: label[index].container[0], groupWithStyle: label[index].container[index2].parts.groupWithStyle, name: nameForLabel };
                         label[index] = { vector: label[index].vector, container: label[index].container, baselineStart: baseline1, baselineEnd: '</svg>' };
                     }
                     else {
 
                         nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
-                        label[index].container[index2] = { content: label[index].container[index2], groupWithStyle: groupWithStyle, name: nameForLabel };
+                        label[index].container[index2] = { parts:label[index].container[index2].parts,content: label[index].container[index2], groupWithStyle: label[index].container[index2].parts.groupWithStyle, name: nameForLabel };
 
                     }
 
@@ -697,10 +703,29 @@ function convertInformation(event) {
 
 
                 else {
+
+
                     defAndUse[index2] = get_from_svg(label[index].container[index2])[label[index].name];
+                    if (index2 == 0 && index == 0) {
+
+                        labelBaseline1End = label[index].container[0].indexOf('>');
+
+                        baseline1 = label[index].container[0].substring(0, labelBaseline1End + 1);
+                        nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
+                    nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
+                    label[index].container[index2] = { content: label[index].container[index2], defWithUse: defAndUse[index2], name: nameForLabel, baselineStart: baseline1, baselineEnd: '</svg>'  };
+                    }
+                    else {
 
                     nameForLabel = document.querySelectorAll('.labelFile')[index].files[index2].name.substring(0, document.querySelectorAll('.labelFile')[index].files[index2].name.length - 4)
                     label[index].container[index2] = { content: label[index].container[index2], defWithUse: defAndUse[index2], name: nameForLabel };
+
+                    }
+
+
+
+
+
 
                 }
 
@@ -859,6 +884,9 @@ function generateFunction(event) {
             }
 
             for (let index2 in arrayOFSelectors) {
+                console.log(index2)
+                // console.log(label[arrayOFSelectors[index2].index].container)
+                console.log(arrayOFSelectors[index2].index)
                 for (let index3 in label[arrayOFSelectors[index2].index].container) {
 
                     if (label[arrayOFSelectors[index2].index].container[index3].name == arrayOFSelectors[index2].selectorName) {
